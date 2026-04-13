@@ -7,6 +7,7 @@ const axios = require("axios");
 const processRoute = require("./routes/process");
 
 const app = express();
+const path = require("path");
 const upload = multer({ storage: multer.memoryStorage() });
 
 console.log("✅ process route imported");
@@ -40,7 +41,11 @@ app.post("/validate-photo", upload.single("image"), async (req, res) => {
 });
 
 // static frontend
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // ✅ process route mounted correctly
 app.use("/process", processRoute);
